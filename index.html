@@ -1250,26 +1250,57 @@
 
 <ol>
   <li>
-    <p><b>Game Development</b></p>
+    <p id="game-dev"><b>Game Development</b></p>
+    <p>The target of the first stage of development was to accomplish our target goal: developing the two games: pong and obstacle avoidance.</p>
+    <ol>
+      <li>In both games, we used the accelerometer for movement of the game components via I2C connection as well as the OLED for displaying the game components via SPI connection.</li>
+      <li>The accelerometer controlled the speed and direction of the user-controlled object. This speed was determined by the degree of tilt of the board through the ParseNProcessCmd() function which read the x and y-axis registers.</li>
+      <li>The components of the game were displayed using functions such as fillRect() and fillCircle().</li>
+      <li>We defined a drawString() function to display the score on the top left corner of the screen character by character by calling the drawChar() function in a loop.</li>
+      <li>For the obstacle avoidance game, we also made a function generateObstaclePosition() to generate a random coordinate for the falling obstacles that the user must avoid.</li>
+      <li>The main logic for each game is in game1() and game2() functions respectively. In both, we set the state of the device to be in game mode, open I2C communication, initialize the game components, display the starting score, and enter an infinite while loop.</li>
+      <li>Within the while loop, we read the tilt of the board, update the speed and position of the components, check for collision with the screen edges or with the other components, and update the score accordingly.</li>
+      <li>We also check for IR input to see if the user wants to quit the game.</li>
+    </ol>
   </li>
-  <ol>
 
-  </ol>
+  <li>
+    <p id="spotify"><b>Spotify Integration</b></p>
+    <p>The second stage of development aimed to achieve our stretch goal: integrating Spotify streaming functionality.</p>
+    <ol>
+      <li>We decided to create our own Flask web server instead of using Amazon IoT for Spotify integration because we wanted flexibility and direct control over the Spotify API calls and responses. This allowed us to customize how we manage user authentication and process search queries.</li>
+      <li>To create our Flask web app, we first created a project with Spotify Developer Dashboard through our Spotify premium account and retrieved our client ID and secret key. We used Spotify OAuth authentication flow to securely obtain access tokens for interacting with the Spotify API.</li>
+      <li>We set up our app’s home route to retrieve the authorization code from Spotify and redirect to the response URL, which is the callback route. The callback route handles the response from Spotify to extract the access token, which we store in the session so all subsequent requests can use it.</li>
+      <li>Next, we implemented the results route. When the user types out a song to search with the IR remote and sends it, CC3200 sends an HTTP POST request to the results route with that search string in the JSON body.</li>
+      <li>In the results route of the web app, we check if the access token is available in the current session. If not, we redirect to the home route and go through the process described above to get a new access token.</li>
+      <li>If there is an access token, we send a GET request to Spotify’s search route and parse the response to extract the track titles and pass them to a lambda function that finds the most popular track.</li>
+      <li>We then call play_spotify_song() which makes a PUT request to Spotify’s play route to start playing that track.</li>
+      <li>We also implemented routes for skipping to the previous or next song, adjusting the volume, and retrieving the currently playing song. These were all done similarly by checking if the access token is available, extracting the necessary JSON data from the request, and passing these parameters to the HTTP request made to Spotify.</li>
+      <li>We then wrote the HTTP POST functions for the CC3200 to send to the Flask web app. For each function, we create the headers, copy the appropriate JSON data, and send the packet.</li>
+      <li>In addition, we modified our processIRSignal() function to call the appropriate function based on the IR remote input.</li>
+      <li>The spotify_streaming() function contains the main logic for this app. Within it, we call connectToAccessPoint() to connect CC3200 to Wi-F, followed by tls_connect() to connect it to our Flask web app.</li>
+      <li>After the Spotify screen is initialized, we enter an infinite while loop where the device waits for an IR interrupt to process what command the user is executing. The only way to break out of this is to exit the Spotify app and go back to home by entering ‘Q.’</li>
+    </ol>
+  </li>
+
+  <img src="spotify_screen.png" style="display: block; margin: 0 auto; max-width: 35%; height: auto;">
+  <p style="text-align: center">Figure 3: Spotify Screen</p>
+  <p></p>
+
+  <li>
+    <p id="navigation"><b>Navigation</b></p>
+    <p>Finally, we created the home screen and implemented navigation to each of the apps from the home screen and out of the apps back to the home screen. </p>
+      <ol>
+        <li>Navigation is handled by the IR remote and tracked by global flags homeState and gameState. If homeState is 1 and gameState is 0, the watch is displaying the home screen. If gameState is 1 and homeState is 0, the watch is displaying one of the games. If both are 0, the watch is displaying the Spotify screen.</li>
+        <li>These flags are checked when navigation is done to know which screen to go to next based on the current state of the watch.</li>
+        <li>The home screen contains menu options that tell the user which remote buttons to press to access each app. When on the home screen, pressing 1, 2, or 3 on the IR remote takes the user to game 1, game 2, or the Spotify app respectively.</li>
+        <li>When in game 1 or game 2, pressing 0 quits the game and takes the user back to the home screen. When in the Spotify app, typing the letter Q (double tapping on button 7) quits the Spotify app and takes the user back to the home screen.</li>
+        <li>Additionally, we added a time display on the home screen to mimic a real smartwatch display. We included time.h and wrote updateClock() to get the current time and draw it on the OLED in the HH:MM:SS format.</li>
+        <li>Within the infinite while loop in home(), we update the clock every second and check if an IR interrupt has been detected.</li>
+      </ol>
+  </li>
 </ol>
-<p>The target of the first stage of development was to accomplish our target goal: developing the two games: pong and obstacle avoidance. In both games, we used the accelerometer for movement of the game components via I2C connection as well as the OLED for displaying the game components via SPI connection. The accelerometer controlled the speed and direction of the user-controlled object. This speed was determined by the degree of tilt of the board through the ParseNProcessCmd() function which read the x and y-axis registers. The components of the game were displayed using functions such as fillRect() and fillCircle(). We defined a drawString() function to display the score on the top left corner of the screen character by character by calling the drawChar() function in a loop. For the obstacle avoidance game, we also made a function generateObstaclePosition() to generate a random coordinate for the falling obstacles that the user must avoid.</p>
-<p>The main logic for each game is in game1() and game2() functions respectively. In both, we set the state of the device to be in game mode, open I2C communication, initialize the game components, display the starting score, and enter an infinite while loop. Within the while loop, we read the tilt of the board, update the speed and position of the components, check for collision with the screen edges or with the other components, and update the score accordingly. We also check for IR input to see if the user wants to quit the game.</p>
-<p>The second stage of development aimed to achieve our stretch goal: integrating Spotify streaming functionality. We decided to create our own Flask web server instead of using Amazon IoT for Spotify integration because we wanted flexibility and direct control over the Spotify API calls and responses. This allowed us to customize how we manage user authentication and process search queries.</p>
-<p>To create our Flask web app, we first created a project with Spotify Developer Dashboard through our Spotify premium account and retrieved our client ID and secret key. We used Spotify OAuth authentication flow to securely obtain access tokens for interacting with the Spotify API. We set up our app’s home route to retrieve the authorization code from Spotify and redirect to the response URL, which is the callback route. The callback route handles the response from Spotify after successful authorization, allowing us to extract the authorization code and exchange it for an access token. We store the access token in the session so all subsequent requests to Spotify can use that access token.</p>
-<p>Next, we implemented the results route. When the user types out a song to search with the IR remote and sends it, CC3200 sends an HTTP POST request to the results route with that search string in the JSON body. The Flask web app extracts the query from the request and stores it in the session. We check if the access token is available in the current session. If not, we redirect to the home route and go through the process described above to get a new access token. If there is an access token, we set up the authorization headers and query parameters and send a GET request to Spotify’s search route. After we get a response from Spotify, we parse it to extract the track titles and pass them to a lambda function that finds the most popular track from the response. Once the track to play is identified, we call play_spotify_song() which makes a PUT request to Spotify’s play route to start playing that track.</p>
-<p>We also implemented routes for skipping to the previous or next song, adjusting the volume, and retrieving the currently playing song. These were all done similarly by checking if the access token is available, extracting the necessary JSON data from the request, and passing these parameters to the HTTP request made to Spotify.</p>
-<p>We then wrote the HTTP POST functions for the CC3200 to send to the Flask web app. For each function, we create the headers, copy the appropriate JSON data, and call sl_Send() and sl_Recv() to send the packet to the Flask web app and receive the response. In addition, we modified our processIRSignal() function to call the appropriate function based on the IR remote input. For example, as mentioned earlier, entering just ‘P’ is the command to pause playback, so we check if the bufferSize is 1 and the only letter entered is ‘P’ before calling http_post_pause(). For any string that is not a listed command, entering it will call http_post() which sends that query as a song search to the web app.</p>
-<p>The spotify_streaming() function contains the main logic for this app. Within it, we call connectToAccessPoint() to connect CC3200 to Wi-F, followed by tls_connect() to connect it to our Flask web app. After the Spotify screen is initialized, we enter an infinite while loop where the device waits for an IR interrupt to process what command the user is executing. The only way to break out of this is to exit the Spotify app and go back to home by entering ‘Q.’</p>
-<img src="spotify_screen.png" style="display: block; margin: 0 auto; max-width: 35%; height: auto;">
-<p style="text-align: center">Figure 3: Spotify Screen</p>
-<p></p>
-<p>Finally, we created the home screen and implemented navigation to each of the apps from the home screen and out of the apps back to the home screen. Navigation is handled by the IR remote and tracked by global flags homeState and gameState. If homeState is 1 and gameState is 0, the watch is displaying the home screen. If gameState is 1 and homeState is 0, the watch is displaying one of the games. If both are 0, the watch is displaying the Spotify screen. These flags are checked when navigation is done to know which screen to go to next based on the current state of the watch.</p>
-<p>The home screen contains menu options that tell the user which remote buttons to press to access each app. When on the home screen, pressing 1, 2, or 3 on the IR remote takes the user to game 1, game 2, or the Spotify app respectively. When in game 1 or game 2, pressing 0 quits the game and takes the user back to the home screen. When in the Spotify app, typing the letter Q (double tapping on button 7) quits the Spotify app and takes the user back to the home screen.</p>
-<p>Additionally, we added a time display on the home screen to mimic a real smartwatch display. We included time.h and wrote updateClock() to get the current time and draw it on the OLED in the HH:MM:SS format. Within the infinite while loop in home(), we update the clock every second and check if an IR interrupt has been detected.</p>
+
 <img src="home_screen.png" style="display: block; margin: 0 auto; max-width: 35%; height: auto;">
 <p style="text-align: center">Figure 4: Home Screen</p>
 <p></p>
