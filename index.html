@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)https://ucd-eec172.github.io/labs/lab2.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Mock Smartwatch</title>
+  <!-- <link rel="stylesheet" href="assets/github-markdown-light.css" /> -->
+  <style>
+    /*github markdown light*/
+
+    .figcaption {
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .markdown-body {
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+      margin: 0;
+      color: #1F2328;
+      background-color: #ffffff;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+      font-size: 16px;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+
+    .markdown-body .octicon {
+      display: inline-block;
+      fill: currentColor;
+      vertical-align: text-bottom;
+    }
+
+    .markdown-body h1:hover .anchor .octicon-link:before,
+    .markdown-body h2:hover .anchor .octicon-link:before,
+    .markdown-body h3:hover .anchor .octicon-link:before,
+    .markdown-body h4:hover .anchor .octicon-link:before,
+    .markdown-body h5:hover .anchor .octicon-link:before,
+    .markdown-body h6:hover .anchor .octicon-link:before {
+      width: 16px;
+      height: 16px;
+      content: ' ';
+      display: inline-block;
+      background-color: currentColor;
+      -webkit-mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' version='1.1' aria-hidden='true'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z'></path></svg>");
+      mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' version='1.1' aria-hidden='true'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z'></path></svg>");
+    }
+
+    .markdown-body details,
+    .markdown-body figcaption,
+    .markdown-body figure {
+      display: block;
+    }
+
+    .markdown-body summary {
+      display: list-item;
+    }
+
+    .markdown-body [hidden] {
+      display: none !important;
+    }
+
+    .markdown-body a {
+      background-color: transparent;
+      color: #0969da;
+      text-decoration: none;
+    }
+
+    .markdown-body abbr[title] {
+      border-bottom: none;
+      -webkit-text-decoration: underline dotted;
+      text-decoration: underline dotted;
+    }
+
+    .markdown-body b,
+    .markdown-body strong {
+      font-weight: 600;
+    }
+
+    .markdown-body dfn {
+      font-style: italic;
+    }
+
+    .markdown-body h1 {
+      margin: .67em 0;
+      font-weight: 600;
+      padding-bottom: .3em;
+      font-size: 2em;
+      border-bottom: 1px solid hsla(210,18%,87%,1);
+    }
+
+    .markdown-body mark {
+      background-color: #fff8c5;
+      color: #1F2328;
+    }
+
+    .markdown-body small {
+      font-size: 90%;
+    }
+
+    .markdown-body sub,
+    .markdown-body sup {
+      font-size: 75%;
+      line-height: 0;
+      position: relative;
+      vertical-align: baseline;
+    }
+
+    .markdown-body sub {
+      bottom: -0.25em;
+    }
+
+    .markdown-body sup {
+      top: -0.5em;
+    }
+
+    .markdown-body img {
+      border-style: none;
+      max-width: 100%;
+      box-sizing: content-box;
+      background-color: #ffffff;
+    }
+
+    .markdown-body code,
+    .markdown-body kbd,
+    .markdown-body pre,
+    .markdown-body samp {
+      font-family: monospace;
+      font-size: 1em;
+    }
+
+    .markdown-body figure {
+      margin: 1em 40px;
+    }
+
+    .markdown-body hr {
+      box-sizing: content-box;
+      overflow: hidden;
+      background: transparent;
+      border-bottom: 1px solid hsla(210,18%,87%,1);
+      height: .25em;
+      padding: 0;
+      margin: 24px 0;
+      background-color: #d0d7de;
+      border: 0;
+    }
+
+    .markdown-body input {
+      font: inherit;
+      margin: 0;
+      overflow: visible;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    .markdown-body [type=button],
+    .markdown-body [type=reset],
+    .markdown-body [type=submit] {
+      -webkit-appearance: button;
+      appearance: button;
+    }
+
+    .markdown-body [type=checkbox],
+    .markdown-body [type=radio] {
+      box-sizing: border-box;
+      padding: 0;
+    }
+
+    .markdown-body [type=number]::-webkit-inner-spin-button,
+    .markdown-body [type=number]::-webkit-outer-spin-button {
+      height: auto;
+    }
+
+    .markdown-body [type=search]::-webkit-search-cancel-button,
+    .markdown-body [type=search]::-webkit-search-decoration {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .markdown-body ::-webkit-input-placeholder {
+      color: inherit;
+      opacity: .54;
+    }
+
+    .markdown-body ::-webkit-file-upload-button {
+      -webkit-appearance: button;
+      appearance: button;
+      font: inherit;
+    }
+
+    .markdown-body a:hover {
+      text-decoration: underline;
+    }
+
+    .markdown-body ::placeholder {
+      color: #6e7781;
+      opacity: 1;
+    }
+
+    .markdown-body hr::before {
+      display: table;
+      content: "";
+    }
+
+    .markdown-body hr::after {
+      display: table;
+      clear: both;
+      content: "";
+    }
+
+    .markdown-body table {
+      border-spacing: 0;
+      border-collapse: collapse;
+      display: block;
+      width: max-content;
+      max-width: 100%;
+      overflow: auto;
+    }
+
+    .markdown-body td,
+    .markdown-body th {
+      padding: 0;
+    }
+
+    .markdown-body details summary {
+      cursor: pointer;
+    }
+
+    .markdown-body details:not([open])>*:not(summary) {
+      display: none !important;
+    }
+
+    .markdown-body a:focus,
+    .markdown-body [role=button]:focus,
+    .markdown-body input[type=radio]:focus,
+    .markdown-body input[type=checkbox]:focus {
+      outline: 2px solid #0969da;
+      outline-offset: -2px;
+      box-shadow: none;
+    }
+
+    .markdown-body a:focus:not(:focus-visible),
+    .markdown-body [role=button]:focus:not(:focus-visible),
+    .markdown-body input[type=radio]:focus:not(:focus-visible),
+    .markdown-body input[type=checkbox]:focus:not(:focus-visible) {
+      outline: solid 1px transparent;
+    }
+
+    .markdown-body a:focus-visible,
+    .markdown-body [role=button]:focus-visible,
+    .markdown-body input[type=radio]:focus-visible,
+    .markdown-body input[type=checkbox]:focus-visible {
+      outline: 2px solid #0969da;
+      outline-offset: -2px;
+      box-shadow: none;
+    }
+
+    .markdown-body a:not([class]):focus,
+    .markdown-body a:not([class]):focus-visible,
+    .markdown-body input[type=radio]:focus,
+    .markdown-body input[type=radio]:focus-visible,
+    .markdown-body input[type=checkbox]:focus,
+    .markdown-body input[type=checkbox]:focus-visible {
+      outline-offset: 0;
+    }
+
+    .markdown-body kbd {
+      display: inline-block;
+      padding: 3px 5px;
+      font: 11px ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
+      line-height: 10px;
+      color: #1F2328;
+      vertical-align: middle;
+      background-color: #f6f8fa;
+      border: solid 1px rgba(175,184,193,0.2);
+      border-bottom-color: rgba(175,184,193,0.2);
+      border-radius: 6px;
+      box-shadow: inset 0 -1px 0 rgba(175,184,193,0.2);
+    }
+
+    .markdown-body h1,
+    .markdown-body h2,
+    .markdown-body h3,
+    .markdown-body h4,
+    .markdown-body h5,
+    .markdown-body h6 {
+      margin-top: 24px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .markdown-body h2 {
+      font-weight: 600;
+      padding-bottom: .3em;
+      font-size: 1.5em;
+      border-bottom: 1px solid hsla(210,18%,87%,1);
+    }
+
+    .markdown-body h3 {
+      font-weight: 600;
+      font-size: 1.25em;
+    }
+
+    .markdown-body h4 {
+      font-weight: 600;
+      font-size: 1em;
+    }
+
+    .markdown-body h5 {
+      font-weight: 600;
+      font-size: .875em;
+    }
+
+    .markdown-body h6 {
+      font-weight: 600;
+      font-size: .85em;
+      color: #656d76;
+    }
+
+    .markdown-body p {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .markdown-body blockquote {
+      margin: 0;
+      padding: 0 1em;
+      color: #656d76;
+      border-left: .25em solid #d0d7de;
+    }
+
+    .markdown-body ul,
+    .markdown-body ol {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-left: 2em;
+    }
+
+    .markdown-body ol ol,
+    .markdown-body ul ol {
+      list-style-type: lower-roman;
+    }
+
+    .markdown-body ul ul ol,
+    .markdown-body ul ol ol,
+    .markdown-body ol ul ol,
+    .markdown-body ol ol ol {
+      list-style-type: lower-alpha;
+    }
+
+    .markdown-body dd {
+      margin-left: 0;
+    }
+
+    .markdown-body tt,
+    .markdown-body code,
+    .markdown-body samp {
+      font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
+      font-size: 12px;
+    }
+
+    .markdown-body pre {
+      margin-top: 0;
+      margin-bottom: 0;
+      font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
+      font-size: 12px;
+      word-wrap: normal;
+    }
+
+    .markdown-body .octicon {
+      display: inline-block;
+      overflow: visible !important;
+      vertical-align: text-bottom;
+      fill: currentColor;
+    }
+
+    .markdown-body input::-webkit-outer-spin-button,
+    .markdown-body input::-webkit-inner-spin-button {
+      margin: 0;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .markdown-body .mr-2 {
+      margin-right: 8px !important;
+    }
+
+    .markdown-body::before {
+      display: table;
+      content: "";
+    }
+
+    .markdown-body::after {
+      display: table;
+      clear: both;
+      content: "";
+    }
+
+    .markdown-body>*:first-child {
+      margin-top: 0 !important;
+    }
+
+    .markdown-body>*:last-child {
+      margin-bottom: 0 !important;
+    }
+
+    .markdown-body a:not([href]) {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .markdown-body .absent {
+      color: #d1242f;
+    }
+
+    .markdown-body .anchor {
+      float: left;
+      padding-right: 4px;
+      margin-left: -20px;
+      line-height: 1;
+    }
+
+    .markdown-body .anchor:focus {
+      outline: none;
+    }
+
+    .markdown-body p,
+    .markdown-body blockquote,
+    .markdown-body ul,
+    .markdown-body ol,
+    .markdown-body dl,
+    .markdown-body table,
+    .markdown-body pre,
+    .markdown-body details {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    .markdown-body blockquote>:first-child {
+      margin-top: 0;
+    }
+
+    .markdown-body blockquote>:last-child {
+      margin-bottom: 0;
+    }
+
+    .markdown-body h1 .octicon-link,
+    .markdown-body h2 .octicon-link,
+    .markdown-body h3 .octicon-link,
+    .markdown-body h4 .octicon-link,
+    .markdown-body h5 .octicon-link,
+    .markdown-body h6 .octicon-link {
+      color: #1F2328;
+      vertical-align: middle;
+      visibility: hidden;
+    }
+
+    .markdown-body h1:hover .anchor,
+    .markdown-body h2:hover .anchor,
+    .markdown-body h3:hover .anchor,
+    .markdown-body h4:hover .anchor,
+    .markdown-body h5:hover .anchor,
+    .markdown-body h6:hover .anchor {
+      text-decoration: none;
+    }
+
+    .markdown-body h1:hover .anchor .octicon-link,
+    .markdown-body h2:hover .anchor .octicon-link,
+    .markdown-body h3:hover .anchor .octicon-link,
+    .markdown-body h4:hover .anchor .octicon-link,
+    .markdown-body h5:hover .anchor .octicon-link,
+    .markdown-body h6:hover .anchor .octicon-link {
+      visibility: visible;
+    }
+
+    .markdown-body h1 tt,
+    .markdown-body h1 code,
+    .markdown-body h2 tt,
+    .markdown-body h2 code,
+    .markdown-body h3 tt,
+    .markdown-body h3 code,
+    .markdown-body h4 tt,
+    .markdown-body h4 code,
+    .markdown-body h5 tt,
+    .markdown-body h5 code,
+    .markdown-body h6 tt,
+    .markdown-body h6 code {
+      padding: 0 .2em;
+      font-size: inherit;
+    }
+
+    .markdown-body summary h1,
+    .markdown-body summary h2,
+    .markdown-body summary h3,
+    .markdown-body summary h4,
+    .markdown-body summary h5,
+    .markdown-body summary h6 {
+      display: inline-block;
+    }
+
+    .markdown-body summary h1 .anchor,
+    .markdown-body summary h2 .anchor,
+    .markdown-body summary h3 .anchor,
+    .markdown-body summary h4 .anchor,
+    .markdown-body summary h5 .anchor,
+    .markdown-body summary h6 .anchor {
+      margin-left: -40px;
+    }
+
+    .markdown-body summary h1,
+    .markdown-body summary h2 {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .markdown-body ul.no-list,
+    .markdown-body ol.no-list {
+      padding: 0;
+      list-style-type: none;
+    }
+
+    .markdown-body ol[type="a s"] {
+      list-style-type: lower-alpha;
+    }
+
+    .markdown-body ol[type="A s"] {
+      list-style-type: upper-alpha;
+    }
+
+    .markdown-body ol[type="i s"] {
+      list-style-type: lower-roman;
+    }
+
+    .markdown-body ol[type="I s"] {
+      list-style-type: upper-roman;
+    }
+
+    .markdown-body ol[type="1"] {
+      list-style-type: decimal;
+    }
+
+    .markdown-body div>ol:not([type]) {
+      list-style-type: decimal;
+    }
+
+    .markdown-body ul ul,
+    .markdown-body ul ol,
+    .markdown-body ol ol,
+    .markdown-body ol ul {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .markdown-body li>p {
+      margin-top: 16px;
+    }
+
+    .markdown-body li+li {
+      margin-top: .25em;
+    }
+
+    .markdown-body dl {
+      padding: 0;
+    }
+
+    .markdown-body dl dt {
+      padding: 0;
+      margin-top: 16px;
+      font-size: 1em;
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    .markdown-body dl dd {
+      padding: 0 16px;
+      margin-bottom: 16px;
+    }
+
+    .markdown-body table th {
+      font-weight: 600;
+    }
+
+    .markdown-body table th,
+    .markdown-body table td {
+      padding: 6px 13px;
+      border: 1px solid #d0d7de;
+    }
+
+    .markdown-body table td>:last-child {
+      margin-bottom: 0;
+    }
+
+    .markdown-body table tr {
+      background-color: #ffffff;
+      border-top: 1px solid hsla(210,18%,87%,1);
+    }
+
+    .markdown-body table tr:nth-child(2n) {
+      background-color: #f6f8fa;
+    }
+
+    .markdown-body table img {
+      background-color: transparent;
+    }
+
+    .markdown-body img[align=right] {
+      padding-left: 20px;
+    }
+
+    .markdown-body img[align=left] {
+      padding-right: 20px;
+    }
+
+    .markdown-body .emoji {
+      max-width: none;
+      vertical-align: text-top;
+      background-color: transparent;
+    }
+
+    .markdown-body span.frame {
+      display: block;
+      overflow: hidden;
+    }
+
+    .markdown-body span.frame>span {
+      display: block;
+      float: left;
+      width: auto;
+      padding: 7px;
+      margin: 13px 0 0;
+      overflow: hidden;
+      border: 1px solid #d0d7de;
+    }
+
+    .markdown-body span.frame span img {
+      display: block;
+      float: left;
+    }
+
+    .markdown-body span.frame span span {
+      display: block;
+      padding: 5px 0 0;
+      clear: both;
+      color: #1F2328;
+    }
+
+    .markdown-body span.align-center {
+      display: block;
+      overflow: hidden;
+      clear: both;
+    }
+
+    .markdown-body span.align-center>span {
+      display: block;
+      margin: 13px auto 0;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .markdown-body span.align-center span img {
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .markdown-body span.align-right {
+      display: block;
+      overflow: hidden;
+      clear: both;
+    }
+
+    .markdown-body span.align-right>span {
+      display: block;
+      margin: 13px 0 0;
+      overflow: hidden;
+      text-align: right;
+    }
+
+    .markdown-body span.align-right span img {
+      margin: 0;
+      text-align: right;
+    }
+
+    .markdown-body span.float-left {
+      display: block;
+      float: left;
+      margin-right: 13px;
+      overflow: hidden;
+    }
+
+    .markdown-body span.float-left span {
+      margin: 13px 0 0;
+    }
+
+    .markdown-body span.float-right {
+      display: block;
+      float: right;
+      margin-left: 13px;
+      overflow: hidden;
+    }
+
+    .markdown-body span.float-right>span {
+      display: block;
+      margin: 13px auto 0;
+      overflow: hidden;
+      text-align: right;
+    }
+
+    .markdown-body code,
+    .markdown-body tt {
+      padding: .2em .4em;
+      margin: 0;
+      font-size: 85%;
+      white-space: break-spaces;
+      background-color: rgba(175,184,193,0.2);
+      border-radius: 6px;
+    }
+
+    .markdown-body code br,
+    .markdown-body tt br {
+      display: none;
+    }
+
+    .markdown-body del code {
+      text-decoration: inherit;
+    }
+
+    .markdown-body samp {
+      font-size: 85%;
+    }
+
+    .markdown-body pre code {
+      font-size: 100%;
+    }
+
+    .markdown-body pre>code {
+      padding: 0;
+      margin: 0;
+      word-break: normal;
+      white-space: pre;
+      background: transparent;
+      border: 0;
+    }
+
+    .markdown-body .highlight {
+      margin-bottom: 16px;
+    }
+
+    .markdown-body .highlight pre {
+      margin-bottom: 0;
+      word-break: normal;
+    }
+
+    .markdown-body .highlight pre,
+    .markdown-body pre {
+      padding: 16px;
+      overflow: auto;
+      font-size: 85%;
+      line-height: 1.45;
+      color: #1F2328;
+      background-color: #f6f8fa;
+      border-radius: 6px;
+    }
+
+    .markdown-body pre code,
+    .markdown-body pre tt {
+      display: inline;
+      max-width: auto;
+      padding: 0;
+      margin: 0;
+      overflow: visible;
+      line-height: inherit;
+      word-wrap: normal;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .markdown-body .csv-data td,
+    .markdown-body .csv-data th {
+      padding: 5px;
+      overflow: hidden;
+      font-size: 12px;
+      line-height: 1;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .markdown-body .csv-data .blob-num {
+      padding: 10px 8px 9px;
+      text-align: right;
+      background: #ffffff;
+      border: 0;
+    }
+
+    .markdown-body .csv-data tr {
+      border-top: 0;
+    }
+
+    .markdown-body .csv-data th {
+      font-weight: 600;
+      background: #f6f8fa;
+      border-top: 0;
+    }
+
+    .markdown-body [data-footnote-ref]::before {
+      content: "[";
+    }
+
+    .markdown-body [data-footnote-ref]::after {
+      content: "]";
+    }
+
+    .markdown-body .footnotes {
+      font-size: 12px;
+      color: #656d76;
+      border-top: 1px solid #d0d7de;
+    }
+
+    .markdown-body .footnotes ol {
+      padding-left: 16px;
+    }
+
+    .markdown-body .footnotes ol ul {
+      display: inline-block;
+      padding-left: 16px;
+      margin-top: 16px;
+    }
+
+    .markdown-body .footnotes li {
+      position: relative;
+    }
+
+    .markdown-body .footnotes li:target::before {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      bottom: -8px;
+      left: -24px;
+      pointer-events: none;
+      content: "";
+      border: 2px solid #0969da;
+      border-radius: 6px;
+    }
+
+    .markdown-body .footnotes li:target {
+      color: #1F2328;
+    }
+
+    .markdown-body .footnotes .data-footnote-backref g-emoji {
+      font-family: monospace;
+    }
+
+    .markdown-body .pl-c {
+      color: #57606a;
+    }
+
+    .markdown-body .pl-c1,
+    .markdown-body .pl-s .pl-v {
+      color: #0550ae;
+    }
+
+    .markdown-body .pl-e,
+    .markdown-body .pl-en {
+      color: #6639ba;
+    }
+
+    .markdown-body .pl-smi,
+    .markdown-body .pl-s .pl-s1 {
+      color: #24292f;
+    }
+
+    .markdown-body .pl-ent {
+      color: #116329;
+    }
+
+    .markdown-body .pl-k {
+      color: #cf222e;
+    }
+
+    .markdown-body .pl-s,
+    .markdown-body .pl-pds,
+    .markdown-body .pl-s .pl-pse .pl-s1,
+    .markdown-body .pl-sr,
+    .markdown-body .pl-sr .pl-cce,
+    .markdown-body .pl-sr .pl-sre,
+    .markdown-body .pl-sr .pl-sra {
+      color: #0a3069;
+    }
+
+    .markdown-body .pl-v,
+    .markdown-body .pl-smw {
+      color: #953800;
+    }
+
+    .markdown-body .pl-bu {
+      color: #82071e;
+    }
+
+    .markdown-body .pl-ii {
+      color: #f6f8fa;
+      background-color: #82071e;
+    }
+
+    .markdown-body .pl-c2 {
+      color: #f6f8fa;
+      background-color: #cf222e;
+    }
+
+    .markdown-body .pl-sr .pl-cce {
+      font-weight: bold;
+      color: #116329;
+    }
+
+    .markdown-body .pl-ml {
+      color: #3b2300;
+    }
+
+    .markdown-body .pl-mh,
+    .markdown-body .pl-mh .pl-en,
+    .markdown-body .pl-ms {
+      font-weight: bold;
+      color: #0550ae;
+    }
+
+    .markdown-body .pl-mi {
+      font-style: italic;
+      color: #24292f;
+    }
+
+    .markdown-body .pl-mb {
+      font-weight: bold;
+      color: #24292f;
+    }
+
+    .markdown-body .pl-md {
+      color: #82071e;
+      background-color: #ffebe9;
+    }
+
+    .markdown-body .pl-mi1 {
+      color: #116329;
+      background-color: #dafbe1;
+    }
+
+    .markdown-body .pl-mc {
+      color: #953800;
+      background-color: #ffd8b5;
+    }
+
+    .markdown-body .pl-mi2 {
+      color: #eaeef2;
+      background-color: #0550ae;
+    }
+
+    .markdown-body .pl-mdr {
+      font-weight: bold;
+      color: #8250df;
+    }
+
+    .markdown-body .pl-ba {
+      color: #57606a;
+    }
+
+    .markdown-body .pl-sg {
+      color: #8c959f;
+    }
+
+    .markdown-body .pl-corl {
+      text-decoration: underline;
+      color: #0a3069;
+    }
+
+    .markdown-body g-emoji {
+      display: inline-block;
+      min-width: 1ch;
+      font-family: "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+      font-size: 1em;
+      font-style: normal !important;
+      font-weight: 400;
+      line-height: 1;
+      vertical-align: -0.075em;
+    }
+
+    .markdown-body g-emoji img {
+      width: 1em;
+      height: 1em;
+    }
+
+    .markdown-body .task-list-item {
+      list-style-type: none;
+    }
+
+    .markdown-body .task-list-item label {
+      font-weight: 400;
+    }
+
+    .markdown-body .task-list-item.enabled label {
+      cursor: pointer;
+    }
+
+    .markdown-body .task-list-item+.task-list-item {
+      margin-top: 4px;
+    }
+
+    .markdown-body .task-list-item .handle {
+      display: none;
+    }
+
+    .markdown-body .task-list-item-checkbox {
+      margin: 0 .2em .25em -1.4em;
+      vertical-align: middle;
+    }
+
+    .markdown-body .contains-task-list:dir(rtl) .task-list-item-checkbox {
+      margin: 0 -1.6em .25em .2em;
+    }
+
+    .markdown-body .contains-task-list {
+      position: relative;
+    }
+
+    .markdown-body .contains-task-list:hover .task-list-item-convert-container,
+    .markdown-body .contains-task-list:focus-within .task-list-item-convert-container {
+      display: block;
+      width: auto;
+      height: 24px;
+      overflow: visible;
+      clip: auto;
+    }
+
+    .markdown-body ::-webkit-calendar-picker-indicator {
+      filter: invert(50%);
+    }
+
+    .markdown-body .markdown-alert {
+      padding: 8px 16px;
+      margin-bottom: 16px;
+      color: inherit;
+      border-left: .25em solid #d0d7de;
+    }
+
+    .markdown-body .markdown-alert>:first-child {
+      margin-top: 0;
+    }
+
+    .markdown-body .markdown-alert>:last-child {
+      margin-bottom: 0;
+    }
+
+    .markdown-body .markdown-alert .markdown-alert-title {
+      display: flex;
+      font-weight: 500;
+      align-items: center;
+      line-height: 1;
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-note {
+      border-left-color: #0969da;
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-note .markdown-alert-title {
+      color: #0969da;
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-important {
+      border-left-color: #8250df;
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-important .markdown-alert-title {
+      color: #8250df;
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-warning {
+      border-left-color: #9a6700;
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-warning .markdown-alert-title {
+      color: #9a6700;
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-tip {
+      border-left-color: #1f883d;
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-tip .markdown-alert-title {
+      color: #1a7f37;
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-caution {
+      border-left-color: #cf222e;
+    }
+
+    .markdown-body .markdown-alert.markdown-alert-caution .markdown-alert-title {
+      color: #d1242f;
+    }
+
+    /*end github markdown light*/
+
+        /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    
+    .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: auto;
+        padding: 45px;
+    }
+
+    div.fig {
+      vertical-align: top;
+      /* display: inline-block; */
+      display: block;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      width: auto;
+    }
+
+    .caption {
+      display: block;
+    }
+
+    @media (max-width: 767px) {
+        .markdown-body {
+            padding: 15px;
+        }
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body><article class="markdown-body">
+<header id="title-block-header">
+<h1 class="title">Mock Smartwatch</h1>
+</header>
+<p><b>Lena Ray</b> and <b>Pranav Bhartiya</b> (website template by Ryan Tsang)</p>
+
+<h2 id="overview">Description</h2>
+<p>For this project, we created a multifunctional smartwatch interface designed to support music streaming, gaming, and an intuitive home screen for easy navigation. It features an OLED display to render game layouts and a Spotify widget. The home screen enables switching between music streaming and built-in games through input from the IR remote, creating an engaging user experience. The built-in games use an accelerometer for gesture-based controls, allowing users to tilt the device to move objects in the games. The first game is a single-player pong game where the objective is to keep bouncing a blue ball on a paddle at the bottom of the OLED screen. The second game is an obstacle avoidance game where red obstacles are falling from the “sky” (the top of the OLED display) and the user must navigate a white circle and avoid colliding with them. The device also has a Spotify streaming app with a search box that takes input from the IR remote for song search functionality and other streaming controls. These search queries are sent to a Flask web application which routes those requests to Spotify for music streaming.</p>
+<h2 id="video-demo">Video Demo</h2>
+<iframe width="800" height="450" src="https://www.youtube.com/embed/FXqzUhnVTMI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<h2 id="TOC">Table of Contents</h2>
+<nav id="TOC" role="doc-toc">
+  <ul>
+  <li><a href="https://lenaray.github.io/eec172-smartwatch/#design" id="design">Design</a></li>
+  <ul>
+  <li><a href="https://lenaray.github.io/eec172-smartwatch/#functional-specs" id="functional-specs">Functional Specification</a></li>
+    <ul>
+      <li><a href="https://lenaray.github.io/eec172-smartwatch/#state-diagram">State Machine Diagram</a></li>
+    </ul>
+  <li><a href="https://lenaray.github.io/eec172-smartwatch/#sys-arch" id="sys-arch">System Architecture</a></li>
+  <ul>
+    <li><a href="https://lenaray.github.io/eec172-smartwatch/#block-diagram">Block Diagram</a></li>
+  </ul>
+  </ul></li>
+  <li><a href="https://lenaray.github.io/eec172-smartwatch/#implementation" id="design">Implementation</a></li>
+  <ul>
+    <li><a href="https://lenaray.github.io/eec172-smartwatch/#game-dev" id="game-dev">Game Development</a></li>
+    <li><a href="https://lenaray.github.io/eec172-smartwatch/#spotify" id="spotify">Spotify Integration</a></li>
+    <li><a href="https://lenaray.github.io/eec172-smartwatch/#navigation" id="navigation">Navigation</a></li>
+  </ul></li>
+  <li><a href="https://lenaray.github.io/eec172-smartwatch/#challenges" id="challenges">Challenges</a></li>
+  <li><a href="https://lenaray.github.io/eec172-smartwatch/#future-work" id="future-work">Future Work</a></li>
+  <li><a href="https://lenaray.github.io/eec172-smartwatch/#bom" id="bom">Bill of Materials</a></li>
+  </nav>
+
+<h2 id="design">Design</h2>
+<p id="functional-specs"><u>Functional Specification</u></p>
+<p>The device functions in five main states: Home (shown in blue in the diagram), Awaiting User Input (green), Playing (purple), Streaming Controls (orange), and Gaming (yellow). Upon launch, the device enters the home state, where it displays the time and presents the user with a navigation menu on the OLED screen. This menu has options to enter the games or Spotify app. Users can navigate to the desired app by pressing the corresponding button on the IR remote.</p>
+<p>If the user decides to play one of the games, the device enters the Gaming state. The built-in games are playable using tilt controls that signal the accelerometer. When the user enters the game, the screen gets initialized and the components are drawn in their initial positions. The game enters an infinite loop, where the position of the ball is continuously checked for collisions and the score is updated according to the game rules. If the game ends, the score is reset, the screen is cleared, and all the components are drawn in their initial positions. We also check for an IR signal at the end of each cycle. Exiting the game by pressing 0 on the IR remote returns the device to the home state, allowing users to choose between music streaming and gaming again.</p>
+<p>If the user opts for music streaming, the device displays the Spotify screen and waits for IR input from the user in the Awaiting User Input state. If the user enters G or P, the device enters the Playback state where it plays or pauses the most recently playing song on Spotify. If the user enters U, D, N, R, or any other string, the device enters the Streaming Controls state where playback is modified. Entering U or D raises or lowers the volume respectively. Entering N or R skips to the previous or next song in queue. Entering any other string performs  a song search for that string in Spotify and plays the top result. After each input, the device ends up in the Playback state, followed by Awaiting User Input because the user can keep modifying playback and streaming controls as long as they are in the Spotify app. Exiting the Spotify app by entering Q returns the device to the home state, allowing users to choose between music streaming and gaming again.</p>
+<p id="state-diagram"><i>State Machine Diagram:</i></p>
+<p>Below is the state machine diagram, which is also displayed larger at the end of the report.</p>
+<img src="state_diagram.png">
+<p style="text-align: center">Figure 1: State Machine Diagram</p>
+<p id="sys-arch"><u>System Architecture</u></p>
+<p>The device’s main component is the TI CC3200 launchpad, which acts as the central processing unit with Wi-Fi connectivity. The launchpad receives input from the IR receiver and accelerometer and sends corresponding updates and commands to the OLED display based on that input. The hardware protocols used are I2C for the accelerometer and SPI for the OLED connection. The web service we used was our Flask web app which routes HTTP requests from CC3200 to the Spotify API.</p>
+<p>The block diagram in Figure 2 shows how each component fits together in the overall system. The remote sends IR signals to the IR receiver, which connects to the CC3200 launchpad. Based on the input, the launchpad begins receiving and sending output to the OLED and accelerometer. The launchpad is also the component that connects to Wi-Fi. Over the Wi-Fi connectivity, the launchpad sends and receives HTTP requests and responses to the Flask web server, which in turn communicates with the Spotify API.</p>
+<p id="block-diagram"><i>Block Diagram:</i></p>
+<img src="block_diagram.png">
+<p style="text-align: center">Figure 2: Block Diagram</p>
+<h2 id="implementation">Implementation</h2>
+<p>This project was divided into 3 major development phases: game development, Spotify integration, and navigation.</p>
+
+<ol>
+  <li>
+    <p><b>Game Development</b></p>
+  </li>
+  <ol>
+
+  </ol>
+</ol>
+<p>The target of the first stage of development was to accomplish our target goal: developing the two games: pong and obstacle avoidance. In both games, we used the accelerometer for movement of the game components via I2C connection as well as the OLED for displaying the game components via SPI connection. The accelerometer controlled the speed and direction of the user-controlled object. This speed was determined by the degree of tilt of the board through the ParseNProcessCmd() function which read the x and y-axis registers. The components of the game were displayed using functions such as fillRect() and fillCircle(). We defined a drawString() function to display the score on the top left corner of the screen character by character by calling the drawChar() function in a loop. For the obstacle avoidance game, we also made a function generateObstaclePosition() to generate a random coordinate for the falling obstacles that the user must avoid.</p>
+<p>The main logic for each game is in game1() and game2() functions respectively. In both, we set the state of the device to be in game mode, open I2C communication, initialize the game components, display the starting score, and enter an infinite while loop. Within the while loop, we read the tilt of the board, update the speed and position of the components, check for collision with the screen edges or with the other components, and update the score accordingly. We also check for IR input to see if the user wants to quit the game.</p>
+<p>The second stage of development aimed to achieve our stretch goal: integrating Spotify streaming functionality. We decided to create our own Flask web server instead of using Amazon IoT for Spotify integration because we wanted flexibility and direct control over the Spotify API calls and responses. This allowed us to customize how we manage user authentication and process search queries.</p>
+<p>To create our Flask web app, we first created a project with Spotify Developer Dashboard through our Spotify premium account and retrieved our client ID and secret key. We used Spotify OAuth authentication flow to securely obtain access tokens for interacting with the Spotify API. We set up our app’s home route to retrieve the authorization code from Spotify and redirect to the response URL, which is the callback route. The callback route handles the response from Spotify after successful authorization, allowing us to extract the authorization code and exchange it for an access token. We store the access token in the session so all subsequent requests to Spotify can use that access token.</p>
+<p>Next, we implemented the results route. When the user types out a song to search with the IR remote and sends it, CC3200 sends an HTTP POST request to the results route with that search string in the JSON body. The Flask web app extracts the query from the request and stores it in the session. We check if the access token is available in the current session. If not, we redirect to the home route and go through the process described above to get a new access token. If there is an access token, we set up the authorization headers and query parameters and send a GET request to Spotify’s search route. After we get a response from Spotify, we parse it to extract the track titles and pass them to a lambda function that finds the most popular track from the response. Once the track to play is identified, we call play_spotify_song() which makes a PUT request to Spotify’s play route to start playing that track.</p>
+<p>We also implemented routes for skipping to the previous or next song, adjusting the volume, and retrieving the currently playing song. These were all done similarly by checking if the access token is available, extracting the necessary JSON data from the request, and passing these parameters to the HTTP request made to Spotify.</p>
+<p>We then wrote the HTTP POST functions for the CC3200 to send to the Flask web app. For each function, we create the headers, copy the appropriate JSON data, and call sl_Send() and sl_Recv() to send the packet to the Flask web app and receive the response. In addition, we modified our processIRSignal() function to call the appropriate function based on the IR remote input. For example, as mentioned earlier, entering just ‘P’ is the command to pause playback, so we check if the bufferSize is 1 and the only letter entered is ‘P’ before calling http_post_pause(). For any string that is not a listed command, entering it will call http_post() which sends that query as a song search to the web app.</p>
+<p>The spotify_streaming() function contains the main logic for this app. Within it, we call connectToAccessPoint() to connect CC3200 to Wi-F, followed by tls_connect() to connect it to our Flask web app. After the Spotify screen is initialized, we enter an infinite while loop where the device waits for an IR interrupt to process what command the user is executing. The only way to break out of this is to exit the Spotify app and go back to home by entering ‘Q.’</p>
+<img src="spotify_screen.png" style="display: block; margin: 0 auto; max-width: 35%; height: auto;">
+<p style="text-align: center">Figure 3: Spotify Screen</p>
+<p></p>
+<p>Finally, we created the home screen and implemented navigation to each of the apps from the home screen and out of the apps back to the home screen. Navigation is handled by the IR remote and tracked by global flags homeState and gameState. If homeState is 1 and gameState is 0, the watch is displaying the home screen. If gameState is 1 and homeState is 0, the watch is displaying one of the games. If both are 0, the watch is displaying the Spotify screen. These flags are checked when navigation is done to know which screen to go to next based on the current state of the watch.</p>
+<p>The home screen contains menu options that tell the user which remote buttons to press to access each app. When on the home screen, pressing 1, 2, or 3 on the IR remote takes the user to game 1, game 2, or the Spotify app respectively. When in game 1 or game 2, pressing 0 quits the game and takes the user back to the home screen. When in the Spotify app, typing the letter Q (double tapping on button 7) quits the Spotify app and takes the user back to the home screen.</p>
+<p>Additionally, we added a time display on the home screen to mimic a real smartwatch display. We included time.h and wrote updateClock() to get the current time and draw it on the OLED in the HH:MM:SS format. Within the infinite while loop in home(), we update the clock every second and check if an IR interrupt has been detected.</p>
+<img src="home_screen.png" style="display: block; margin: 0 auto; max-width: 35%; height: auto;">
+<p style="text-align: center">Figure 4: Home Screen</p>
+<p></p>
+<p>Lastly, Figures 5 and 6 show our circuit schematic and which pins were used for each component.</p>
+<img src="circuit_schematic.png" style="display: block; margin: 0 auto; max-width: 100%; height: auto;">
+<p style="text-align: center">Figure 5: Circuit Schematic</p>
+<p></p>
+<img src="hardware_wiring.png" style="display: block; margin: 0 auto; max-width: 50%; height: auto;">
+<p style="text-align: center">Figure 6: Hardware Wiring</p>
+<p></p>
+<p>Not shown in the circuit schematic are the pins configured for the accelerometer (pin 1 for I2C SCL and pin 2 for I2C SDA).</p>
+<h2 id="challenges">Challenges</h2>
+<p>Here are some of the challenges we faced and how we overcame them:</p>
+<p>While developing the games, we struggled with making the movement of the objects smooth and maintaining the score display when any object enters that position. Initially, we were clearing the whole screen for every interaction of the loop in the games before updating the positions components and displaying them. This caused the game to be slow and glitchy. We fixed this issue by filling the current positions with black to cover them and then drawing the components in their new positions. This was much faster and made gameplay more smooth. Another problem we faced was that when any moving component reached the position where the score was being displayed, the score was being cleared until it was updated again. We overcame this by adding a check for the current position of the components. If a component was in the position near the score, it would change its trajectory as it does when it hits the edge of the screen.</p>
+<p>One of the primary challenges we faced during the Spotify integration process was sending HTTP requests from the CC3200 to the Flask web app. In Lab 4, we learned how to connect to Wi-Fi and send HTTP requests to Amazon IoT. However, with our own locally-hosted web app, we needed to modify the HTTP headers in our POST and GET functions. We also updated the hex IP address value in tls_connect() to match our Flask web app’s address and removed the TLS encryption because it was configuring socket options based on the Amazon IoT certificates, which were not valid for our Flask app. After this, we were able to send successful HTTP POST requests from the CC3200 to our Flask app, allowing us to search for and play a song.</p>
+<p>However, we noticed that we were not able to send any subsequent POST requests after the first one without rerunning the code. If we sent two song searches in a row, the CC3200 would output “POST failed” due to negative return values from sl_Send() and sl_Recv(). After debugging these functions, we realized that the socket was not being closed properly after sending a request. We fixed this by creating a new socket at the beginning of each POST function with tls_connect() and called sl_Close() at the end. With this, we were able to send consecutive POST requests successfully, allowing us to perform multiple song searches and implement streaming controls.</p>
+<p>Finally, since we worked on game development and Spotify integration on separate boards, we realized as we combined our code that we had used some of the same pins for different purposes in our code. Thus, we had to change some pin numbers so none were being reused. Once we made the needed changes, we were able to successfully incorporate the three components onto one board.</p>
+<h2 id="future-work">Future Work</h2>
+<p>In the future, there are some additional features that could be implemented to improve the device’s functionality and user experience. For example, introducing additional games with more complexity would offer further entertainment options. Incorporating multiplayer functionality to the existing games (like two-player pong) could create an exciting shared gaming experience. We could also improve the graphical quality of games to enhance user engagement. Currently, we use a lot of text to explain the navigation on each screen, so we could replace some of that with icons or format it better for easier readability.</p>
+<p>In addition, the Spotify app only supports immediate playback after search, so we could implement song queuing functionality to allow the users to create and manage playlists or queues of songs. Instead of using our lambda function to determine the most popular song for that search, we could provide users with the top search results on the OLED and allow them to select their preferred song for greater customization. Upon selection, the search results disappear and the current queue could be displayed instead. By incorporating these additional features, the device can be adjusted to offer a more personalized and engaging experience for users.</p>
+<h2 id="bom">Bill Of Materials</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Cost</th>
+          <th>Source</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>TI CC3200 Launchpad</td>
+          <td>1</td>
+          <td>$55.00 (provided)</td>
+          <td>TI</td>
+      </tr>
+      <tr>
+          <td>Adafruit OLED Display</td>
+          <td>1</td>
+          <td>$18 (provided)</td>
+          <td>Adafruit</td>
+      </tr>
+      <tr>
+          <td>IR Receiver</td>
+          <td>1</td>
+          <td>$8 (provided)</td>
+          <td>Various suppliers</td>
+      </tr>
+      <tr>
+          <td>AT&T IR Remote</td>
+          <td>1</td>
+          <td>$20 (provided)</td>
+          <td>AT&T</td>
+      </tr>
+      <tr>
+          <td>Miscellaneous Components (wires, breadboard etc)</td>
+          <td>1 set</td>
+          <td>$14 (provided)</td>
+          <td>Various suppliers</td>
+      </tr>
+      <tr>
+          <td>Spotify Premium Account</td>
+          <td>1</td>
+          <td>$9.99</td>
+          <td>Spotify</td>
+      </tr>
+  </tbody>
+</table>
+<p>Total cost: $9.99</p>
+</article>
+<div id="forest-ext-shadow-host"><template shadowrootmode="open"><head></head><div id="root"></div></template></div></body></html>
